@@ -1,0 +1,232 @@
+# Program 1: Input validation (no blank values)
+
+def get_non_empty_input(prompt):
+    while True:
+        value = input(prompt).strip()
+        if value == "":
+            print("Value cannot be blank. Please enter again.")
+        else:
+            return value
+
+
+# Taking inputs
+url = get_non_empty_input("Enter URL: ")
+description = get_non_empty_input("Enter Description: ")
+
+# Type validation
+valid_types = ["Educational", "Search Engine", "Fun"]
+
+while True:
+    url_type = get_non_empty_input("Enter Type (Educational/Search Engine/Fun): ")
+    if url_type in valid_types:
+        break
+    else:
+        print("Invalid type! Please select from given options.")
+
+# Display result
+print("\nEntered Data:")
+print("URL:", url)
+print("Description:", description)
+print("Type:", url_type)
+
+**********************
+
+# Program 2: Write validated data to a text file
+
+def get_non_empty_input(prompt):
+    while True:
+        value = input(prompt).strip()
+        if value == "":
+            print("Value cannot be blank.")
+        else:
+            return value
+
+
+valid_types = ["Educational", "Search Engine", "Fun"]
+
+# Input
+url = get_non_empty_input("Enter URL: ")
+description = get_non_empty_input("Enter Description: ")
+
+while True:
+    url_type = get_non_empty_input("Enter Type (Educational/Search Engine/Fun): ")
+    if url_type in valid_types:
+        break
+    else:
+        print("Invalid type!")
+
+# Write to file
+with open("urls.txt", "w") as file:   # "w" = overwrite
+    file.write(f"{url}|{description}|{url_type}\n")
+
+print("✅ Data written to file.")
+
+************************************
+
+# Program 3: Append data to existing file
+
+def get_non_empty_input(prompt):
+    while True:
+        value = input(prompt).strip()
+        if value == "":
+            print("Value cannot be blank.")
+        else:
+            return value
+
+
+valid_types = ["Educational", "Search Engine", "Fun"]
+
+url = get_non_empty_input("Enter URL: ")
+description = get_non_empty_input("Enter Description: ")
+
+while True:
+    url_type = get_non_empty_input("Enter Type (Educational/Search Engine/Fun): ")
+    if url_type in valid_types:
+        break
+    else:
+        print("Invalid type!")
+
+# Append mode
+with open("urls.txt", "a") as file:   # "a" = append
+    file.write(f"{url}|{description}|{url_type}\n")
+
+print("✅ Data appended successfully.")
+
+*******************************************
+
+# Program 4: Menu-based program
+
+def get_non_empty_input(prompt):
+    while True:
+        value = input(prompt).strip()
+        if value == "":
+            print("Value cannot be blank.")
+        else:
+            return value
+
+
+valid_types = ["Educational", "Search Engine", "Fun"]
+
+while True:
+    print("\n1. Add URL")
+    print("2. Search by Type")
+    print("0. Exit")
+
+    choice = input("Enter choice: ")
+
+    if choice == "1":
+        url = get_non_empty_input("Enter URL: ")
+        description = get_non_empty_input("Enter Description: ")
+
+        while True:
+            url_type = get_non_empty_input("Enter Type (Educational/Search Engine/Fun): ")
+            if url_type in valid_types:
+                break
+            else:
+                print("Invalid type!")
+
+        with open("urls.txt", "a") as file:
+            file.write(f"{url}|{description}|{url_type}\n")
+
+        print("✅ URL added.")
+
+    elif choice == "2":
+        search_type = get_non_empty_input("Enter type to search: ")
+
+        with open("urls.txt", "r") as file:
+            for line in file:
+                url, desc, t = line.strip().split("|")
+                if t == search_type:
+                    print("\nURL:", url)
+                    print("Description:", desc)
+
+    elif choice == "0":
+        print("Exiting...")
+        break
+
+    else:
+        print("Invalid choice!")
+``
+
+**********************************
+
+# Program 5: Final integrated program
+
+import os
+
+FILE = "urls.txt"
+valid_types = ["Educational", "Search Engine", "Fun"]
+
+
+def get_non_empty_input(prompt):
+    while True:
+        value = input(prompt).strip()
+        if value == "":
+            print("Value cannot be blank.")
+        else:
+            return value
+
+
+def add_url():
+    url = get_non_empty_input("Enter URL: ")
+    description = get_non_empty_input("Enter Description: ")
+
+    while True:
+        url_type = get_non_empty_input("Enter Type (Educational/Search Engine/Fun): ")
+        if url_type in valid_types:
+            break
+        else:
+            print("Invalid type!")
+
+    with open(FILE, "a") as file:
+        file.write(f"{url}|{description}|{url_type}\n")
+
+    print("✅ URL added.")
+
+
+def search_url():
+    if not os.path.exists(FILE):
+        print("File not found.")
+        return
+
+    search_type = get_non_empty_input("Enter type to search: ")
+
+    found = False
+
+    with open(FILE, "r") as file:
+        for line in file:
+            try:
+                url, desc, t = line.strip().split("|")
+                if t == search_type:
+                    print("\nURL:", url)
+                    print("Description:", desc)
+                    found = True
+            except:
+                print("Error reading line.")
+
+    if not found:
+        print("No matching data found.")
+
+
+# Main menu
+while True:
+    try:
+        print("\n===== MENU =====")
+        print("1. Add URL")
+        print("2. Search by Type")
+        print("0. Exit")
+
+        choice = input("Enter choice: ")
+
+        if choice == "1":
+            add_url()
+        elif choice == "2":
+            search_url()
+        elif choice == "0":
+            print("Exiting program.")
+            break
+        else:
+            print("Invalid choice.")
+
+    except Exception as e:
+        print("⚠️ Error occurred:", e)
